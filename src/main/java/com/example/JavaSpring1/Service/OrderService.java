@@ -30,7 +30,7 @@ public class OrderService {
             createOrder("Nguyen Van G", 4500000.0, OrderStatus.FINISHED);
             createOrder("Tran Thi H", 1800000.0, OrderStatus.DELIVERED);
 
-            System.out.println("✅ Đã tạo " + DBODER.size() + " đơn hàng mẫu");
+            System.out.println(" Đã tạo " + DBODER.size() + " đơn hàng mẫu");
         }
     }
     private void createOrder(String customer, double amount, OrderStatus status) {
