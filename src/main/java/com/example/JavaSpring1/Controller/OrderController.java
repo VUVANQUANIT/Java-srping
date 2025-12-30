@@ -2,6 +2,7 @@ package com.example.JavaSpring1.Controller;
 
 import com.example.JavaSpring1.DTO.OrderResponseDTO;
 import com.example.JavaSpring1.ENUM.OrderStatus;
+import com.example.JavaSpring1.Entity.StartupLogger;
 import com.example.JavaSpring1.Service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+    private final StartupLogger startupLogger;
     @GetMapping
     public List<OrderResponseDTO> getOrders() {
         return orderService.getAllOrders();
