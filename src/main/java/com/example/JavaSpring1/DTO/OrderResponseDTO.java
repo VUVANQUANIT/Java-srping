@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class OrderResponseDTO {
-    private long Id;
     private String customerName;
     private double amount;
     private OrderStatus status;

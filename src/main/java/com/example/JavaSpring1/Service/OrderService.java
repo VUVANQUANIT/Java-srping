@@ -1,5 +1,6 @@
 package com.example.JavaSpring1.Service;
 
+import com.example.JavaSpring1.DTO.OrderRequestDTO;
 import com.example.JavaSpring1.DTO.OrderResponseDTO;
 import com.example.JavaSpring1.ENUM.OrderStatus;
 import com.example.JavaSpring1.Entity.Order;
@@ -40,6 +41,38 @@ public class OrderService {
         order.setAmount(amount);
         order.setStatus(status);
         DBODER.add(order);
+    }
+    public void createOrder(OrderRequestDTO requestDTO) {
+        Order order = new Order();
+        order.setId(idCounter++);
+        order.setCustomerName(requestDTO.getCustomerName());
+        order.setAmount(requestDTO.getAmount());
+        order.setStatus(requestDTO.getStatus());
+        DBODER.add(order);
+    }
+    public OrderResponseDTO updateOrder(int x, OrderRequestDTO requestDTO) {
+       try {
+           Order order = DBODER.stream().filter(o -> o.getId() == x).findFirst().orElseThrow( ()->new RuntimeException("Can not find order with id " + x));
+           order.setCustomerName(requestDTO.getCustomerName());
+           order.setAmount(requestDTO.getAmount());
+           order.setStatus(requestDTO.getStatus());
+           return orderMapper.toResponseDTO(order);
+       }catch (Exception e) {
+           e.printStackTrace();
+       }
+      return null;
+
+    }
+    public List<OrderResponseDTO> deleteOrder(int id) {
+
+        try {
+            Order order = DBODER.stream().filter(o -> o.getId() == id).findFirst().orElseThrow( ()->new RuntimeException("Can not find order with id " + id));
+            DBODER.remove(order);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orderMapper.toResponseDTOList(DBODER);
     }
     public List<OrderResponseDTO> getAllOrders() {
         return orderMapper.toResponseDTOList(DBODER);
