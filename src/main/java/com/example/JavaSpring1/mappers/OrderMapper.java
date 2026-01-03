@@ -10,21 +10,9 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
-    // QUAN TRỌNG: Map Order -> OrderResponseDTO
-    // Phương thức này MapStruct sẽ tự generate code
-    OrderResponseDTO toResponseDTO(Order order);
-
-    // Map OrderRequestDTO -> Order (cho create/update)
-    // ignore id vì sẽ do server set
-    @Mapping(target = "id", ignore = true)
-    Order toEntity(OrderRequestDTO dto);
-
-    // Map List<Order> -> List<OrderResponseDTO>
-    // MapStruct tự động sử dụng toResponseDTO() cho từng phần tử
-    List<OrderResponseDTO> toResponseDTOList(List<Order> orders);
-
-    // ----------------- KHÔNG CẦN -----------------
-    // OrderRequestDTO toRequestDTO(Order order); // Không cần!
-    // OrderRequestDTO map(Order order); // Không cần!
+  OrderResponseDTO toResponseDTO(Order order);
+  @Mapping(target = "id",ignore = true)
+  Order toEntity(OrderRequestDTO orderRequestDTO);
+  List<OrderResponseDTO> toResponseDTOList(List<Order> orders);
 
 }
