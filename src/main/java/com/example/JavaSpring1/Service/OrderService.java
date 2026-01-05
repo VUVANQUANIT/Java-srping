@@ -5,7 +5,6 @@ import com.example.JavaSpring1.DTO.OrderResponseDTO;
 import com.example.JavaSpring1.ENUM.OrderStatus;
 import com.example.JavaSpring1.Entity.Order;
 import com.example.JavaSpring1.mappers.OrderMapper;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,62 +17,7 @@ public class OrderService {
     public static List<Order> DBODER = new ArrayList<>();
     private static Long idCounter = 1L;
     private final OrderMapper orderMapper;
-    @PostConstruct
-    public void initData() {
-        if (DBODER.isEmpty()) {
-            // Tạo 6+ orders như yêu cầu
-            createOrder("Nguyen Van A", 1500000.0, OrderStatus.PAID);
-            createOrder("Tran Thi B", 2500000.0, OrderStatus.NEW);
-            createOrder("Le Van C", 800000.0, OrderStatus.DELIVERED);
-            createOrder("Pham Thi D", 3200000.0, OrderStatus.PAID);
-            createOrder("Hoang Van E", 1200000.0, OrderStatus.NEW);
-            createOrder("Do Thi F", 500000.0, OrderStatus.PAID);
-            createOrder("Nguyen Van G", 4500000.0, OrderStatus.FINISHED);
-            createOrder("Tran Thi H", 1800000.0, OrderStatus.DELIVERED);
 
-            System.out.println(" Đã tạo " + DBODER.size() + " đơn hàng mẫu");
-        }
-    }
-    private void createOrder(String customer, double amount, OrderStatus status) {
-        Order order = new Order();
-        order.setId(idCounter++);
-        order.setCustomerName(customer);
-        order.setAmount(amount);
-        order.setStatus(status);
-        DBODER.add(order);
-    }
-    public void createOrder(OrderRequestDTO requestDTO) {
-        Order order = new Order();
-        order.setId(idCounter++);
-        order.setCustomerName(requestDTO.getCustomerName());
-        order.setAmount(requestDTO.getAmount());
-        order.setStatus(requestDTO.getStatus());
-        DBODER.add(order);
-    }
-    public OrderResponseDTO updateOrder(int x, OrderRequestDTO requestDTO) {
-       try {
-           Order order = DBODER.stream().filter(o -> o.getId() == x).findFirst().orElseThrow( ()->new RuntimeException("Can not find order with id " + x));
-           order.setCustomerName(requestDTO.getCustomerName());
-           order.setAmount(requestDTO.getAmount());
-           order.setStatus(requestDTO.getStatus());
-           return orderMapper.toResponseDTO(order);
-       }catch (Exception e) {
-           e.printStackTrace();
-       }
-      return null;
-
-    }
-    public List<OrderResponseDTO> deleteOrder(int id) {
-
-        try {
-            Order order = DBODER.stream().filter(o -> o.getId() == id).findFirst().orElseThrow( ()->new RuntimeException("Can not find order with id " + id));
-            DBODER.remove(order);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return orderMapper.toResponseDTOList(DBODER);
-    }
     public List<OrderResponseDTO> getAllOrders() {
         return orderMapper.toResponseDTOList(DBODER);
     }
