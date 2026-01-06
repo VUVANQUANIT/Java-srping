@@ -17,9 +17,6 @@ public interface OrderMapper {
     // Map OrderRequestDTO -> Order (cho create/update)
     // ignore các field sẽ do server set
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "customerName", ignore = true)
-    @Mapping(target = "amount", ignore = true)
-    @Mapping(target = "status", ignore = true)
     Order toEntity(OrderRequestDTO dto);
 
     // Map List<Order> -> List<OrderResponseDTO>

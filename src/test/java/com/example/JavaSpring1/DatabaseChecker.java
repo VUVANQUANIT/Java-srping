@@ -15,9 +15,9 @@ public class DatabaseChecker {
     @PostConstruct
     public void check() {
         try {
-            System.out.println("✅ DB URL: " + dataSource.getConnection().getMetaData().getURL());
+            System.out.println("DB URL: " + dataSource.getConnection().getMetaData().getURL());
         } catch (Exception e) {
-            System.err.println("❌ Cannot connect DB");
+            System.err.println(" Cannot connect DB");
             e.printStackTrace();
         }
     }
