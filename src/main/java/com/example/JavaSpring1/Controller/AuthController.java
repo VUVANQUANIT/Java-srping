@@ -1,6 +1,7 @@
 package com.example.JavaSpring1.Controller;
 
 import com.example.JavaSpring1.DTO.LoginRequest;
+import com.example.JavaSpring1.DTO.LoginResponse;
 import com.example.JavaSpring1.DTO.RegisterRequest;
 import com.example.JavaSpring1.Service.AuthService;
 import jakarta.validation.Valid;
@@ -24,8 +25,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
-        authService.login(request);
-        return ResponseEntity.ok("Login OK");
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+
+        return ResponseEntity.ok(authService.login(request));
     }
 }
