@@ -1,6 +1,7 @@
 package com.example.JavaSpring1.Service;
 
 import com.example.JavaSpring1.Config.JwtConfig;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -28,4 +29,19 @@ public class JwtService {
                 signWith(getSingingKey(), SignatureAlgorithm.HS256).
                 compact();
     }
+    public Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(getSingingKey()).build().parseClaimsJws(token).getBody();
+    }
+     public boolean isTokenValid(String token) {
+        try {
+            extractAllClaims(token);
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+     }
+     public String extractEmail(String token) {
+        return extractAllClaims(token).getSubject();
+     }
 }
