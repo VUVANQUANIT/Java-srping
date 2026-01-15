@@ -4,6 +4,7 @@ import com.example.JavaSpring1.Config.JwtConfig;
 import com.example.JavaSpring1.DTO.LoginRequest;
 import com.example.JavaSpring1.DTO.LoginResponse;
 import com.example.JavaSpring1.DTO.RegisterRequest;
+import com.example.JavaSpring1.ENUM.Role;
 import com.example.JavaSpring1.Entity.User;
 import com.example.JavaSpring1.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class AuthService {
         User user = new User();
         user.setEmail(registerRequest.getEmail());
         user.setPasswordHash(encodedPassword);
+        user.setRole(Role.USER);
         userRepository.save(user);
         log.info("User registered: {}", user.getEmail());
     }
@@ -38,7 +40,7 @@ public class AuthService {
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPasswordHash())) {
             throw new IllegalArgumentException("Email hoặc password sai");
         }
-        String token = jwtService.generateToken(loginRequest.getEmail());
+        String token = jwtService.generateToken(user);
 
         log.info("User login success: {}", user.getEmail());
         return new LoginResponse(

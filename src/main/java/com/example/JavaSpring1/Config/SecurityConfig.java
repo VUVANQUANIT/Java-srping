@@ -24,8 +24,10 @@ public class SecurityConfig {
                     sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )// Tắt CSRF cho API testing
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/**").permitAll() // Cho phép tất cả request đến /api/** không cần authentication
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/auth/**").permitAll() // Cho phép các endpoint auth không cần authentication
+                .requestMatchers("GET", "/api/product").permitAll() // Cho phép GET /api/product không cần authentication
+                .requestMatchers("GET", "/api/product/{id}").permitAll() // Cho phép GET /api/product/{id} không cần authentication
+                .requestMatchers("/api/**").authenticated() // Các endpoint khác của /api/** cần authentication (sẽ được kiểm tra bởi @PreAuthorize)
                 .anyRequest().authenticated() // Các request khác vẫn cần authentication
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,14 +35,14 @@ public class ProductController {
     public ResponseEntity<ProductDTO> getProductsByID(@PathVariable("id") Long id) {
         return ResponseEntity.ok(productService.findById(id));
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(
             @PathVariable("id") Long id,
             @Valid @RequestBody ProductDTO productDTO) {
         return ResponseEntity.ok(productService.update(id, productDTO));
     }
-
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         productService.delete(id);
