@@ -37,8 +37,14 @@ public class AuthService {
     public LoginResponse login(LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Email hoặc password sai"));
+        log.info("Authenticating user {}", loginRequest.getEmail());
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPasswordHash())) {
             throw new IllegalArgumentException("Email hoặc password sai");
+
+        }
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPasswordHash())) {
+            log.warn("Login failed for {}", loginRequest.getEmail());
+
         }
         String token = jwtService.generateToken(user);
 
