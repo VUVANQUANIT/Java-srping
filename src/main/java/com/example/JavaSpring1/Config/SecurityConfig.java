@@ -22,13 +22,24 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(sm ->
                     sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )// Tắt CSRF cho API testing
+            )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll() // Cho phép các endpoint auth không cần authentication
-                .requestMatchers("GET", "/api/product").permitAll() // Cho phép GET /api/product không cần authentication
-                .requestMatchers("GET", "/api/product/{id}").permitAll() // Cho phép GET /api/product/{id} không cần authentication
-                .requestMatchers("/api/**").authenticated() // Các endpoint khác của /api/** cần authentication (sẽ được kiểm tra bởi @PreAuthorize)
-                .anyRequest().authenticated() // Các request khác vẫn cần authentication
+                // Swagger UI endpoints
+                .requestMatchers(
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/webjars/**"
+                ).permitAll()
+                // Auth endpoints
+                .requestMatchers("/auth/**").permitAll()
+                // Public product endpoints
+                .requestMatchers("GET", "/api/product").permitAll()
+                .requestMatchers("GET", "/api/product/{id}").permitAll()
+                // Các endpoint khác cần authentication
+                .requestMatchers("/api/**").authenticated()
+                .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         
