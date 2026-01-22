@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/product")
 @RequiredArgsConstructor
 @Tag(name = "Product", description = "API quản lý sản phẩm")
+@Slf4j
 public class ProductController {
     private final ProductService productService;
 
@@ -44,6 +46,7 @@ public class ProductController {
             @Parameter(description = "Thông tin phân trang (page, size, sort)")
             Pageable pageable
     ) {
+        log.info("Fetching all products");
         return ResponseEntity.ok(productService.findAll(pageable));
     }
 

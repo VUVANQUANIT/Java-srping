@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .requestMatchers("GET", "/api/product/{id}").permitAll()
                 // Các endpoint khác cần authentication
                 .requestMatchers("/api/**").authenticated()
+                    .requestMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
