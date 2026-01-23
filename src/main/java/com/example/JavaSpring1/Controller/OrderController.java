@@ -2,43 +2,76 @@ package com.example.JavaSpring1.Controller;
 
 import com.example.JavaSpring1.DTO.OrderResponseDTO;
 import com.example.JavaSpring1.ENUM.OrderStatus;
-import com.example.JavaSpring1.Entity.Order;
 import com.example.JavaSpring1.Service.OrderService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
+@RequiredArgsConstructor
 public class OrderController {
-    private OrderService orderService;
+    private final OrderService orderService;
+
     @GetMapping
-    public List<OrderResponseDTO> getOrders() {
-        return orderService.getAllOrders();
+    public ResponseEntity<List<OrderResponseDTO>> getOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.getOrderById(id));
+    }
+
     @GetMapping("/revenue")
-    public Map<String,Double> getRevenue() {
+    public ResponseEntity<Map<String, Double>> getRevenue() {
         double revenue = orderService.totalAmount();
-        return Map.of("revenue",revenue);
+        return ResponseEntity.ok(Map.of("revenue", revenue));
     }
+
     @GetMapping("/max")
-    public OrderResponseDTO getMax() {
-        return orderService.getOrderMax();
+    public ResponseEntity<OrderResponseDTO> getMax() {
+        OrderResponseDTO order = orderService.getOrderMax();
+        if (order == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(order);
     }
-    @GetMapping("/higlt-value")
-    public List<OrderResponseDTO> getHigltValue(@RequestParam double minvalue) {
-        return orderService.getOrderMaxPaid(minvalue);
+
+    @GetMapping("/max-paid")
+    public ResponseEntity<OrderResponseDTO> getMaxPaid() {
+        OrderResponseDTO order = orderService.getOrderMaxPaid();
+        if (order == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(order);
     }
+
+    @GetMapping("/high-value")
+    public ResponseEntity<List<OrderResponseDTO>> getHighValue(@RequestParam double minvalue) {
+        return ResponseEntity.ok(orderService.getOrderMaxPaid(minvalue));
+    }
+
     @GetMapping("/sorted")
-    public List<OrderResponseDTO> getSorted() {
-        return orderService.sortByAmountDesc1();
+    public ResponseEntity<List<OrderResponseDTO>> getSorted() {
+        return ResponseEntity.ok(orderService.sortByAmountDesc());
     }
+
     @GetMapping("/stats")
-    public Map<OrderStatus,Long> getOderStats() {
-        return orderService.countByStatus();
+    public ResponseEntity<Map<OrderStatus, Long>> getOrderStats() {
+        return ResponseEntity.ok(orderService.countByStatus());
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
+    }
+
+    @GetMapping("/user/email/{email}")
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersByUserEmail(@PathVariable String email) {
+        return ResponseEntity.ok(orderService.getOrdersByUserEmail(email));
     }
 }

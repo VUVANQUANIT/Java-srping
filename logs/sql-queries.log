@@ -1,0 +1,126 @@
+2026-01-23 15:23:47.024 [http-nio-8080-exec-1] DEBUG - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+2026-01-23 15:23:47.180 [http-nio-8080-exec-1] DEBUG - 
+    insert 
+    into
+        users
+        (created_at, email, password_hash, role, updated_at) 
+    values
+        (?, ?, ?, ?, ?)
+2026-01-23 15:23:54.638 [http-nio-8080-exec-10] DEBUG - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.password_hash,
+        u1_0.role,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-01-23 15:27:05.849 [http-nio-8080-exec-7] DEBUG - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.password_hash,
+        u1_0.role,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-01-23 15:27:05.879 [http-nio-8080-exec-7] DEBUG - 
+    select
+        o1_0.id,
+        o1_0.amount,
+        o1_0.created_at,
+        o1_0.customer_name,
+        o1_0.status,
+        o1_0.updated_at,
+        o1_0.user_id,
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.password_hash,
+        u1_0.role,
+        u1_0.updated_at 
+    from
+        orders o1_0 
+    join
+        users u1_0 
+            on u1_0.id=o1_0.user_id
+2026-01-23 15:28:26.847 [http-nio-8080-exec-3] DEBUG - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.password_hash,
+        u1_0.role,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-01-23 15:28:26.858 [http-nio-8080-exec-3] DEBUG - 
+    select
+        o1_0.id,
+        o1_0.amount,
+        o1_0.created_at,
+        o1_0.customer_name,
+        o1_0.status,
+        o1_0.updated_at,
+        o1_0.user_id,
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.password_hash,
+        u1_0.role,
+        u1_0.updated_at 
+    from
+        orders o1_0 
+    join
+        users u1_0 
+            on u1_0.id=o1_0.user_id
+2026-01-23 15:28:45.542 [http-nio-8080-exec-2] DEBUG - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.password_hash,
+        u1_0.role,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-01-23 15:28:45.552 [http-nio-8080-exec-2] DEBUG - 
+    select
+        o1_0.id,
+        o1_0.amount,
+        o1_0.created_at,
+        o1_0.customer_name,
+        o1_0.status,
+        o1_0.updated_at,
+        o1_0.user_id,
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.password_hash,
+        u1_0.role,
+        u1_0.updated_at 
+    from
+        orders o1_0 
+    join
+        users u1_0 
+            on u1_0.id=o1_0.user_id 
+    where
+        u1_0.id=?
