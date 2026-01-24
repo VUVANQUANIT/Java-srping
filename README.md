@@ -9,9 +9,10 @@ REST API sử dụng Spring Boot, PostgreSQL, JWT Authentication, và Swagger UI
 - ✅ Quản lý đơn hàng
 - ✅ Role-based access control (USER, ADMIN)
 - ✅ Swagger UI để test API
-- ✅ Validation
-- ✅ Global Exception Handling
+- ✅ Validation đầy đủ (DTO + @Valid)
+- ✅ Error model thống nhất (GlobalExceptionHandler)
 - ✅ Unit Tests
+ - ✅ Logging query DB + thống kê hiệu năng
 
 ## Tech Stack
 
@@ -94,6 +95,20 @@ src/
 | PUT | `/api/product/{id}` | Cập nhật sản phẩm | Yes | ADMIN |
 | DELETE | `/api/product/{id}` | Xóa sản phẩm | Yes | USER/ADMIN |
 
+### Orders
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| GET | `/api/orders` | Danh sách đơn hàng | Yes |
+| GET | `/api/orders/{id}` | Chi tiết đơn hàng | Yes |
+| GET | `/api/orders/revenue` | Tổng doanh thu (PAID) | Yes |
+| GET | `/api/orders/max` | Đơn hàng lớn nhất | Yes |
+| GET | `/api/orders/max-paid` | Đơn hàng PAID lớn nhất | Yes |
+| GET | `/api/orders/high-value?minvalue=...` | Đơn hàng PAID >= min | Yes |
+| GET | `/api/orders/sorted` | Sắp xếp amount desc | Yes |
+| GET | `/api/orders/stats` | Thống kê theo status | Yes |
+| GET | `/api/orders/user/{userId}` | Đơn theo userId | Yes |
+| GET | `/api/orders/user/email/{email}` | Đơn theo email | Yes |
+
 ## Test API với Swagger
 
 1. Truy cập: http://localhost:8080/swagger-ui/index.html
@@ -135,6 +150,35 @@ jwt.refresh-expiration=604800000
 
 # Swagger
 springdoc.swagger-ui.path=/swagger-ui.html
+```
+
+## Validation & Error Model
+
+Hệ thống validation dùng `@Valid` trên request body và trả về error model thống nhất qua `GlobalExceptionHandler`.
+
+Ví dụ lỗi validation (HTTP 400):
+```json
+{
+  "status": 400,
+  "error": "Validation Failed",
+  "message": "Dữ liệu đầu vào không hợp lệ",
+  "validationErrors": [
+    { "field": "email", "message": "must be a well-formed email address" }
+  ]
+}
+```
+
+## Logging & DB Performance
+
+Logging SQL và thời gian chạy query đã bật:
+- Log SQL: `org.hibernate.SQL=DEBUG`
+- Log parameters: `BasicBinder=TRACE`
+- Log thống kê Hibernate mỗi 60s
+- Log file SQL: `logs/sql-queries.log`
+
+Bạn có thể chỉnh ngưỡng slow query bằng:
+```
+spring.jpa.properties.hibernate.session.events.log.LOG_QUERIES_SLOWER_THAN_MS=1000
 ```
 
 ## Troubleshooting
